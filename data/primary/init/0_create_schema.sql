@@ -1,0 +1,1 @@
+create table table1(x int primary key, y int) ;

@@ -14,7 +14,9 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
-    volumes: [./data/primary/postgres.conf:/etc/postgresql/postgresql.conf]
+    volumes:
+      - ./data/primary/postgres.conf:/etc/postgresql/postgresql.conf
+      - ./data/primary/init:/docker-entrypoint-initdb.d
   secondary-db:
     image: postgres:14
     command:
@@ -22,10 +24,13 @@ services:
       - "-c"
       - "config_file=/etc/postgresql/postgresql.conf"
     restart: always
+    depends_on: [primary-db]
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     ports:
       - "5433:5432"
-    volumes: [./data/secondary/postgres.conf:/etc/postgresql/postgresql.conf]
+    volumes:
+      - ./data/secondary/postgres.conf:/etc/postgresql/postgresql.conf
+      - ./data/secondary/init:/docker-entrypoint-initdb.d
