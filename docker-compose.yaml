@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  primary-db:
+    image: postgres:14
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes: [./data/primary/postgres.conf:/etc/postgresql/postgresql.conf]
+  secondary-db:
+    image: postgres:14
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes: [./data/secondary/postgres.conf:/etc/postgresql/postgresql.conf]
